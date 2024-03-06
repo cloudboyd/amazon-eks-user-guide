@@ -1,9 +1,20 @@
-# Updating the Kubernetes `kube-proxy` self\-managed add\-on<a name="managing-kube-proxy"></a>
+# Working with the Kubernetes `kube-proxy` add\-on<a name="managing-kube-proxy"></a>
 
 **Important**  
 We recommend adding the Amazon EKS type of the add\-on to your cluster instead of using the self\-managed type of the add\-on\. If you're not familiar with the difference between the types, see [Amazon EKS add\-ons](eks-add-ons.md)\. For more information about adding an Amazon EKS add\-on to your cluster, see [Creating an add\-on](managing-add-ons.md#creating-an-add-on)\. If you're unable to use the Amazon EKS add\-on, we encourage you to submit an issue about why you can't to the [Containers roadmap GitHub repository](https://github.com/aws/containers-roadmap/issues)\.
 
 The `kube-proxy` add\-on is deployed on each Amazon EC2 node in your Amazon EKS cluster\. It maintains network rules on your nodes and enables network communication to your Pods\. The add\-on isn't deployed to Fargate nodes in your cluster\. For more information, see [https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/) in the Kubernetes documentation\.
+
+The following table lists the latest version of the Amazon EKS add\-on type for each Kubernetes version\.<a name="kube-proxy-versions"></a>
+
+
+| Kubernetes version | `1.29` | `1.28` | `1.27` | `1.26` | `1.25` | `1.24` | `1.23` | 
+| --- | --- | --- | --- | --- | --- | --- | --- | 
+|  | v1\.29\.1\-eksbuild\.2 | v1\.28\.6\-eksbuild\.2 | v1\.27\.10\-eksbuild\.2 | v1\.26\.13\-eksbuild\.2 | v1\.25\.16\-eksbuild\.3 | v1\.24\.17\-eksbuild\.8 | v1\.23\.17\-eksbuild\.9 | 
+
+**Important**  
+An earlier version of the documentation was incorrect\. `kube-proxy` versions `v1.28.5`, `v1.27.9`, and `v1.26.12` aren't available\.  
+If you're self\-managing this add\-on, the versions in the table might not be the same as the available self\-managed versions\.
 
 There are two types of the `kube-proxy` container image available for each Amazon EKS cluster version:
 + **Default** – This image type is based on a Debian\-based Docker image that is maintained by the Kubernetes upstream community\.
@@ -12,10 +23,10 @@ There are two types of the `kube-proxy` container image available for each Amazo
 
 **Latest available self\-managed `kube-proxy` container image version for each Amazon EKS cluster version**  
 
-| Image type | `1.28` | `1.27` | `1.26` | `1.25` | `1.24` | `1.23` | 
-| --- | --- | --- | --- | --- | --- | --- | 
-| kube\-proxy \(default type\) | Only minimal type is available | Only minimal type is available | Only minimal type is available | Only minimal type is available | v1\.24\.10\-eksbuild\.2 | v1\.23\.16\-eksbuild\.2 | 
-| kube\-proxy \(minimal type\) | v1\.28\.2\-minimal\-eksbuild\.2 | v1\.27\.6\-minimal\-eksbuild\.2 | v1\.26\.9\-minimal\-eksbuild\.2 | v1\.25\.15\-minimal\-eksbuild\.2 | v1\.24\.17\-minimal\-eksbuild\.3 | v1\.23\.17\-minimal\-eksbuild\.4 | 
+| Image type | `1.29` | `1.28` | `1.27` | `1.26` | `1.25` | `1.24` | `1.23` | 
+| --- | --- | --- | --- | --- | --- | --- | --- | 
+| kube\-proxy \(default type\) | Only minimal type is available | Only minimal type is available | Only minimal type is available | Only minimal type is available | Only minimal type is available | v1\.24\.10\-eksbuild\.2 | v1\.23\.16\-eksbuild\.2 | 
+| kube\-proxy \(minimal type\) | v1\.29\.1\-minimal\-eksbuild\.2 | v1\.28\.6\-minimal\-eksbuild\.2 | v1\.27\.10\-minimal\-eksbuild\.2 | v1\.26\.13\-minimal\-eksbuild\.2 | v1\.25\.16\-minimal\-eksbuild\.3 | v1\.24\.17\-minimal\-eksbuild\.4 | v1\.23\.17\-minimal\-eksbuild\.5 | 
 
 **Important**  
 The default image type isn't available for Kubernetes version `1.25` and later\. You must use the minimal image type\.
@@ -28,7 +39,7 @@ When you [update an Amazon EKS add\-on type](managing-add-ons.md#updating-an-add
 + `Kube-proxy` on an Amazon EKS cluster has the same [compatibility and skew policy as Kubernetes](https://kubernetes.io/releases/version-skew-policy/#kube-proxy)\.
 + `Kube-proxy` must be the same minor version as `kubelet` on your Amazon EC2 nodes\. 
 + `Kube-proxy` can't be later than the minor version of your cluster's control plane\.
-+ The `kube-proxy` version on your Amazon EC2 nodes can't be more than two minor versions earlier than your control plane\. For example, if your control plane is running Kubernetes 1\.28, then the `kube-proxy` minor version can't be earlier than 1\.26\.
++ The `kube-proxy` version on your Amazon EC2 nodes can't be more than two minor versions earlier than your control plane\. For example, if your control plane is running Kubernetes 1\.29, then the `kube-proxy` minor version can't be earlier than 1\.27\.
 + If you recently updated your cluster to a new Kubernetes minor version, then update your Amazon EC2 nodes to the same minor version *before* updating `kube-proxy` to the same minor version as your nodes\.
 
 **To update the `kube-proxy` self\-managed add\-on**
